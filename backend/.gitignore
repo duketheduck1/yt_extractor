@@ -33,3 +33,7 @@ $RECYCLE.BIN/
 
 #ignore output test file
 test.txt
+
+# Ignore all MP3 and MP4 files
+.mp3
+.mp4
