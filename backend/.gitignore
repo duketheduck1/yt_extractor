@@ -35,5 +35,5 @@ $RECYCLE.BIN/
 test.txt
 
 # Ignore all MP3 and MP4 files
-.mp3
-.mp4
+*.mp3
+*.mp4
