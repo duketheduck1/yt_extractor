@@ -46,10 +46,22 @@ def load_specific_data(url: str):
                 print(i)
                 print(video_stream[i])
 
-        # download_video_file_hosted(video_stream[31]["url"])    
+        download_video_file_hosted(video_stream[3]["url"])    
             
     except:
         print("Something is wrong")
+
+def download_video_file_hosted(chosen_url):
+    ydl_opts = {
+        'format': 'besvideo/best',
+        'outtmpl':'downloaded_video.mp3',
+    }
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([chosen_url])
+                print("Download complete!")
+    except Exception as e:
+        print(f"Failed to download video: {e}")
        
 
 
