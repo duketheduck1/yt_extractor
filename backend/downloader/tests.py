@@ -23,8 +23,8 @@ def output_to_file(url: str):
 
 # show youtube audio and stream    
 def load_specific_data(url: str):
-        ydl_opts = {}
-    
+    ydl_opts = {}
+    try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             meta = ydl.extract_info(url, download=False)
 
@@ -32,20 +32,27 @@ def load_specific_data(url: str):
             video_stream = []
             formats = meta.get('formats', [])
             for i in formats:
-                resolution = 'Audio'
-                if i.get('height') is not None:
+                resolution = "audio only"
+                if i.get('height') != None:
                     resolution = f"{i['height']} x {i['width']}"
-                video_stream.append(
+                video_stream.append( #showing all size of stream
                     {
                         "resolution": resolution,
-                        "size": i.get('filesize'),
-                        "url": url,
+                        "size": i.get("filesize", None), # cant use i["filesize"] since there are some stream with unknown filesize 
+                        "url": i["url"], #url to download youtube video link
                     }
                 )
-            for i in video_stream:
+            for i in range(len(video_stream)):
                 print(i)
+                print(video_stream[i])
+
+        # download_video_file_hosted(video_stream[31]["url"])    
+            
+    except:
+        print("Something is wrong")
        
-    
+
+
 
 if __name__ == "__main__":
     URL = 'https://www.youtube.com/watch?v=bqNvkAfTvIc'
