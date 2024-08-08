@@ -30,3 +30,6 @@ $RECYCLE.BIN/
 .vscode/
 .history/
 *.code-workspace
+
+#ignore output test file
+test.txt
