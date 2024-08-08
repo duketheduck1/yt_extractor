@@ -46,7 +46,7 @@ def load_specific_data(url: str):
                 print(i)
                 print(video_stream[i])
 
-        download_video_file_hosted(video_stream[3]["url"])    
+        download_video_file_hosted(video_stream[5]["url"])    
             
     except:
         print("Something is wrong")
@@ -62,9 +62,6 @@ def download_video_file_hosted(chosen_url):
                 print("Download complete!")
     except Exception as e:
         print(f"Failed to download video: {e}")
-       
-
-
 
 if __name__ == "__main__":
     URL = 'https://www.youtube.com/watch?v=bqNvkAfTvIc'
