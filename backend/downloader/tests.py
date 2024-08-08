@@ -21,32 +21,31 @@ def output_to_file(url: str):
         else:
             print("No formats available")
 
-# load ytdlp data       
+# show youtube audio and stream    
 def load_specific_data(url: str):
-    ydl_opts = {}
-    try:
+        ydl_opts = {}
+    
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             meta = ydl.extract_info(url, download=False)
 
             # Extract the formats list
             video_stream = []
-            formats = meta.get("formats", [])
+            formats = meta.get('formats', [])
             for i in formats:
-                resolution = "audio only"
-                if i["height"] != None:
-                    resolution = f"{i["height"]} x {i["width"]}"
+                resolution = 'Audio'
+                if i.get('height') is not None:
+                    resolution = f"{i['height']} x {i['width']}"
                 video_stream.append(
                     {
                         "resolution": resolution,
-                        "size": i["filesize"],
+                        "size": i.get('filesize'),
                         "url": url,
                     }
                 )
             for i in video_stream:
                 print(i)
        
-    except Exception:
-        print("There is no such url")
+    
 
 if __name__ == "__main__":
     URL = 'https://www.youtube.com/watch?v=bqNvkAfTvIc'
