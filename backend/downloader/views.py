@@ -20,3 +20,16 @@ def _validate_youtube_url(url: str) -> bool:
             return short_match is not None
     else:
         return False
+@api_view(["POST"])
+def load_youtube_data(request):
+    try:
+        print("Loading video from youtube")
+        url = request.data.get('url')
+        if _validate_youtube_url(url):
+            pass
+
+    except:
+        pass
+
+
+
