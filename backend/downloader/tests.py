@@ -1,6 +1,8 @@
 from django.test import TestCase
 import json
 import yt_dlp
+import re 
+
 # Create your tests here.
 # Test ytdlp output meta data to file
 
@@ -62,6 +64,20 @@ def download_video_file_hosted(chosen_url):
     except Exception as e:
         print(f"Failed to download video: {e}")
 
+def validate_youtube_url(url: str) -> bool:
+    if isinstance(url, str) == True:
+        if "shorts" not in url:
+            yt_regex = "^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$"
+            youtube_match = re.match(yt_regex, url)
+            print(youtube_match == None)
+        elif "shorts" in url:
+            short_regex = "^(?:https?:\/\/)?(?:www\.)?(youtube\.com\/(watch\?v=|shorts\/)|youtu\.be\/)([\w\-]+)"
+            short_match = re.match(short_regex, url)
+            print(short_match == None)
+    else:
+        return False
+
 if __name__ == "__main__":
     URL = 'https://www.youtube.com/shorts/Tyx4YCkbd-o'
-    load_specific_data(URL) 
+    # load_specific_data(URL) 
+    validate_youtube_url(URL)
