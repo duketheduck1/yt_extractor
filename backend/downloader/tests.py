@@ -1,10 +1,9 @@
 from django.test import TestCase
-
-# Create your tests here.
 import json
 import yt_dlp
-
+# Create your tests here.
 # Test ytdlp output meta data to file
+
 def output_to_file(url: str):
     ydl_opts = {}
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -64,5 +63,5 @@ def download_video_file_hosted(chosen_url):
         print(f"Failed to download video: {e}")
 
 if __name__ == "__main__":
-    URL = 'https://www.youtube.com/watch?v=bqNvkAfTvIc'
-    load_specific_data(URL)
+    URL = 'https://www.youtube.com/shorts/Tyx4YCkbd-o'
+    load_specific_data(URL) 
