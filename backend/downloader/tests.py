@@ -23,7 +23,7 @@ def output_to_file(url: str):
             print("No formats available")
 
 # show youtube audio and stream    
-def load_specific_data(url: str):
+def load_video_data(url: str):
     ydl_opts = {}
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -34,20 +34,22 @@ def load_specific_data(url: str):
             formats = meta.get('formats', [])
             for i in formats:
                 resolution = "audio only"
-                if i.get('height') != None:
+                if i.get('height') == None:
+                    continue
+                else:
                     resolution = f"{i['height']} x {i['width']}"
                 video_stream.append( #showing all size of stream
                     {
                         "resolution": resolution,
                         "size": i.get("filesize", None), # cant use i["filesize"] since there are some stream with unknown filesize 
-                        "url": i["url"], #url to download youtube video link
+                        # "url": i["url"],
                     }
                 )
             for i in range(len(video_stream)):
                 print(i)
                 print(video_stream[i])
 
-        download_video_file_hosted(video_stream[5]["url"])    
+        # download_video_file_hosted(video_stream[5]["url"])    
             
     except:
         print("Something is wrong")
@@ -79,5 +81,8 @@ def validate_youtube_url(url: str) -> bool:
 
 if __name__ == "__main__":
     URL = 'https://www.youtube.com/shorts/Tyx4YCkbd-o'
-    # load_specific_data(URL) 
-    validate_youtube_url(URL)
+    load_specific_data(URL) 
+    # validate_youtube_url(URL)
+    # help(yt_dlp.postprocessor.PostProcessor)
+
+    
