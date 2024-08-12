@@ -82,7 +82,7 @@ def download_audio(url):
 
 
 #list resolution for video
-def list_resolutions(url) -> list:
+def list_video_resolutions(url) -> list:
     ydl_opts = {
         'quiet': True,  # Suppress the download output
     }
@@ -98,22 +98,43 @@ def list_resolutions(url) -> list:
             resolution = format.get('format_note')
             if resolution and resolution[0].isdigit():
                 resolutions.add(resolution)
-        l = sorted(list(resolutions))
+        list_string_resolution = sorted(list(resolutions))
         print(f"Available resolutions for {url}:")
-        resolutions = l
-        for resolution in resolutions:
-            print(f"- {resolution}")
-
-        
-        return l
+        # resolutions = list_string_resolution
+        # for resolution in resolutions:
+        #     print(f"{resolution}")
+        list_int_resolution = get_resolution(list_string_resolution)
+        return list_int_resolution
     
+def get_resolution(resolutions: list):
+    res = []
+    for i in range(len(resolutions)):
+        res.append(int(resolutions[i][:len(resolutions[i])-1]))
+    res = sorted(res)
+    return res
 
+def download_video(url, resolution_choice: int, savepath):
+    all_resolutions = list_video_resolutions(url)
+    if resolution_choice not in all_resolutions:
+        raise ValueError("This resolution does not exist for the url")
+    ydl_opts = {
+        "format": f"bestvideo[height<={resolution_choice}]+bestaudio/best",
+        "merge_output_format": "webm",
+        # "outtmpl": savepath,
+    }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download(url)
+    
 
 if __name__ == "__main__":
     URL = "https://www.youtube.com/watch?v=kKAue9DiHc0&t=2s"
+    save_path = r"C:\Users\ducod\Downloads"
     # load_specific_data(URL) 
     # download_audio(URL)
-    list_resolutions(URL)
+    # print(list_video_resolutions(URL))
+    # help(yt_dlp.postprocessor)
+    download_video(URL, 1080, save_path)
+    
     
 
     
