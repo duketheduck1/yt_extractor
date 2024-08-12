@@ -2,6 +2,7 @@ from django.test import TestCase
 import json
 import yt_dlp
 import re 
+from datetime import timedelta
 
 # Create your tests here.
 # Test ytdlp output meta data to file
@@ -23,7 +24,7 @@ def output_to_file(url: str):
             print("No formats available")
 
 # show youtube audio and stream    
-def load_specific_data(url: str):
+def load_data(url: str):
     ydl_opts = {}
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -124,19 +125,38 @@ def download_video(url, resolution_choice: int, savepath):
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download(url)
-    
+
+import yt_dlp
+
+
+def get_info(url, options):
+    with yt_dlp.YoutubeDL(options) as ydl:
+        meta = ydl.extract_info(url, download=False)
+    context = {
+        "title": meta.get("title", None),
+        "duration":str(timedelta(seconds=meta.get("duration", 1))),
+        "views":meta.get("view_count", 1),
+        "uploader":meta.get("uploader", None),
+    }
+    return context
+        
 
 if __name__ == "__main__":
-    URL = "https://www.youtube.com/watch?v=kKAue9DiHc0&t=2s"
+    ydl_opts = {
+        "format": f"bestvideo[height<={360}]+bestaudio/best",
+        "merge_output_format": "webm",
+        # "outtmpl": savepath,
+    }
+    URL = "https://www.youtube.com/watch?v=mBw3qzf4s18"
     save_path = r"C:\Users\ducod\Downloads"
     # load_specific_data(URL) 
     # download_audio(URL)
     # print(list_video_resolutions(URL))
     # help(yt_dlp.postprocessor)
-    download_video(URL, 1080, save_path)
+    # download_video(URL, 360, save_path)
+    # load_video_data(URL)
+    print(get_info(URL, ydl_opts))
     
-    
-
     
     
     
