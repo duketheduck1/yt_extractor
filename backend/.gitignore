@@ -31,11 +31,9 @@ $RECYCLE.BIN/
 .history/
 *.code-workspace
 
-#test output file
+#ignore output test file
 test.txt
 
-
-# Ignore all MP3, MP4, webm files
+# Ignore all MP3 and MP4 files
 *.mp3
 *.mp4
-*.webm
