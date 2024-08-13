@@ -21,6 +21,6 @@ from downloader.views import * #import everything from downloader/views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("api/", include(""))
+    path("admin/", admin.site.urls),
+    path("api/", include("downloader.urls"))
 ]
