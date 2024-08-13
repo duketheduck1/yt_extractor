@@ -27,8 +27,13 @@ def _validate_youtube_url(url: str) -> bool:
 def load_youtube_data(request):
     try:
         print("Loading video from youtube")
-        url = request.data.get('url')
-        
+        url = request.data.get('url') #in json form
+        '''
+        Cheatsheet for request
+        {
+            "url": "https://www.youtube.com/watch?v=BaW_jenozKc"
+        }
+        '''
         if _validate_youtube_url(url):
             ydl_opts = {
                 'quiet': True,  # Suppress the download output
