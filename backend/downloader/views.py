@@ -67,13 +67,15 @@ def _list_yt_resolution(formats: list) -> list:
 
     list_resolution_string = sorted(list(resolutions))
     # print(f"Available resolutions for given URL:")
-    list_int_resolution = _get_resolution(list_resolution_string)
+    list_int_resolution = _update_resolution_list(list_resolution_string)
     return list_int_resolution
 
-def _get_resolution(resolutions: list) -> list: #from "1080p" string to 1080
+def _update_resolution_list(resolutions: list) -> list: #from "1080p" string to 1080
     res = []
+
     for i in range(len(resolutions)):
         res.append(int(resolutions[i][:len(resolutions[i])-1]))
+
     res = sorted(res)
     return res
 
