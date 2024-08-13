@@ -41,7 +41,7 @@ def load_data(url: str):
                     {
                         "resolution": resolution,
                         "size": i.get("filesize", None), # cant use i["filesize"] since there are some stream with unknown filesize 
-                        # "url": i["url"], 
+                        "url": i["url"], 
                         "asr": i.get("asr", None)
                     }
                 )
@@ -49,7 +49,7 @@ def load_data(url: str):
                 print(i)
                 print(video_stream[i])
 
-        # download_video_file_hosted(video_stream[15]["url"])    
+        download_video_file_hosted(video_stream[15]["url"])    
             
     except:
         print("Something is wrong")
@@ -57,7 +57,7 @@ def load_data(url: str):
 def download_video_file_hosted(chosen_url):
     ydl_opts = {
         'format': 'besvideo/best',
-        'outtmpl':'downloaded_video.mp4',
+        'outtmpl':'downloaded_video.webm',
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -114,20 +114,17 @@ def get_resolution(resolutions: list):
     res = sorted(res)
     return res
 
-def download_video(url, resolution_choice: int, savepath):
+def download_video(url, resolution_choice: int):
     all_resolutions = list_video_resolutions(url)
     if resolution_choice not in all_resolutions:
         raise ValueError("This resolution does not exist for the url")
     ydl_opts = {
         "format": f"bestvideo[height<={resolution_choice}]+bestaudio/best",
         "merge_output_format": "webm",
-        # "outtmpl": savepath,
+        
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download(url)
-
-import yt_dlp
-
 
 def get_info(url, options):
     with yt_dlp.YoutubeDL(options) as ydl:
@@ -142,20 +139,16 @@ def get_info(url, options):
         
 
 if __name__ == "__main__":
-    ydl_opts = {
-        "format": f"bestvideo[height<={360}]+bestaudio/best",
-        "merge_output_format": "webm",
-        # "outtmpl": savepath,
-    }
+    
     URL = "https://www.youtube.com/watch?v=mBw3qzf4s18"
     save_path = r"C:\Users\ducod\Downloads"
-    # load_specific_data(URL) 
+    # load_data(URL) 
     # download_audio(URL)
     # print(list_video_resolutions(URL))
     # help(yt_dlp.postprocessor)
     # download_video(URL, 360, save_path)
     # load_video_data(URL)
-    print(get_info(URL, ydl_opts))
+    
     
     
     
