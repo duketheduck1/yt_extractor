@@ -46,9 +46,9 @@ def load_youtube_data(request):
             # list of resolution to choose from ( res(p) = 4320, 2160, 1440, 1080, 720, 480, 380, 240, 144 )
             list_resolution = _list_yt_resolution(formats) 
 
-            #context about title, duration, views, uploader and list of resolution
+            #context about url, title, duration, views, uploader and list of resolution
             context = { 
-                "url": url
+                "url": url,
                 "title": meta.get("title", None),
                 "duration":str(timedelta(seconds=meta.get("duration", 1))),
                 "views":meta.get("view_count", 1),
