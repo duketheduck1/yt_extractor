@@ -48,6 +48,7 @@ def load_youtube_data(request):
 
             #context about title, duration, views, uploader and list of resolution
             context = { 
+                "url": url
                 "title": meta.get("title", None),
                 "duration":str(timedelta(seconds=meta.get("duration", 1))),
                 "views":meta.get("view_count", 1),
@@ -71,11 +72,11 @@ def _list_yt_resolution(formats: list) -> list:
             resolutions.add(resolution)
 
     list_resolution_string = sorted(list(resolutions))
-    # print(f"Available resolutions for given URL:")
     list_int_resolution = _update_resolution_list(list_resolution_string)
     return list_int_resolution
 
-def _update_resolution_list(resolutions: list) -> list: #from "1080p" string to 1080
+#from "1080p" string to 1080
+def _update_resolution_list(resolutions: list) -> list: 
     res = []
 
     for i in range(len(resolutions)):
@@ -84,17 +85,18 @@ def _update_resolution_list(resolutions: list) -> list: #from "1080p" string to 
     res = sorted(res)
     return res
 
-# @api_view(["POST"])
-# def download_video(url, resolution_choice):
-#     all_resolutions = _list_yt_resolution(url)
-#     if resolution_choice not in all_resolutions:
-#         raise ValueError("This resolution does not exist for the url")
-#     ydl_opts = {
-#         "format": f"bestvideo[height<={resolution_choice}]+bestaudio/best",
-#         "merge_output_format": "webm",
-#     }
-#     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-#         ydl.download(url)
+# This function will get the url and 1 resolution choice from context["resolution"]
+@api_view(["POST"])
+def download_video(url, resolution_choice): 
+    all_resolutions = _list_yt_resolution(url)
+    if resolution_choice not in all_resolutions:
+        raise ValueError("This resolution does not exist for the url")
+    ydl_opts = {
+        "format": f"bestvideo[height<={resolution_choice}]+bestaudio/best",
+        "merge_output_format": "webm",
+    }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download(url)
 
 
 
