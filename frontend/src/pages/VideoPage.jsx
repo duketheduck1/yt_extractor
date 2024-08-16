@@ -1,11 +1,15 @@
-import react from "react"
+import react from "react";
 import "../styles/VideoPage.css";
+import {NavLink} from "react-router-dom";
+import Button from "react-bootstrap/esm/Button";
 function VideoPage() {
     return (
         <>
             <h1>Youtube Extractor</h1>
             <div>
-                <input type="text" placeholder="Please parse your youtube URL here" name="youtubeUrl" className="url-input"></input>
+                <NavLink to="/">
+                    <Button variant="outline-danger" >Home</Button>
+                </NavLink>
             </div>
         </>
     )

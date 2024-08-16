@@ -1,5 +1,4 @@
 import { useState, react } from 'react';
-import './styles/App.css';
 import {Route, Routes, BrowserRouter, Navigate} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import AudioPage from "./pages/AudioPage";
