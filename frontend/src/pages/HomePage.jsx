@@ -1,5 +1,4 @@
 import react from "react";
-import '../styles/index.css';
 import "../styles/HomePage.css";
 import Button from 'react-bootstrap/Button';
 import { NavLink } from "react-router-dom";
