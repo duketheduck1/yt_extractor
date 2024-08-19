@@ -1,11 +1,10 @@
 import react from "react";
 import { NavLink } from "react-router-dom";
-import "../styles/AudioPage.css";
+import "../styles/DownloadAudio.css";
 import Button from "react-bootstrap/esm/Button";
-function AudioPage() {
+function DownloadAudio() {
     return (
         <>
-            <h1>Youtube Extractor</h1>
             <div>
                 
                 <NavLink to="/">
@@ -17,4 +16,4 @@ function AudioPage() {
     )
 }
 
-export default AudioPage;
+export default DownloadAudio;

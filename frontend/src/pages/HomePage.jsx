@@ -1,9 +1,18 @@
-import react from "react";
+import React, {react, useState, useEffect} from "react";
 import "../styles/HomePage.css";
 import Button from 'react-bootstrap/Button';
 import { NavLink } from "react-router-dom";
+import DownloadAudio from "../components/DownloadAudio";
+import DownloadVideo from "../components/DownloadVideo";
+// import axios from "axios";
 
-function HomePage() {
+const HomePage = () => {
+    const [url, setUrl] = useState("");
+    const [videoData, setVideoData] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    
+
     return (
         <>
             <h1 className="header"> Youtube Extractor </h1>
@@ -15,14 +24,15 @@ function HomePage() {
                     name="youtubeUrl"
                     className="url-input"
                 ></input>
-                <div>
+
+                {/* <div>
                     <NavLink to="/audio">
                         <Button variant="outline-danger">Download Audio</Button>
                     </NavLink>
                     <NavLink to="/video">
                         <Button variant="outline-danger">Download Video</Button>
                     </NavLink>
-                </div>
+                </div> */}
                 
             </div>
         </>
