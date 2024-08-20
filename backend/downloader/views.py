@@ -43,7 +43,7 @@ def load_youtube_data(request):
                 meta = ydl.extract_info(url, download=False)
                 formats = meta.get('formats', [])
 
-            # list of resolution to choose from ( res(p) = 4320, 2160, 1440, 1080, 720, 480, 380, 240, 144 )
+            # list of resolution to choose from ( res(p) = 4320, 2160, 1440, 1080, 720, 480, 360, 240, 144 )
             list_resolution = _list_yt_resolution(formats) 
 
             #context about url, title, duration, views, uploader and list of resolution
