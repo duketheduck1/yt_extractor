@@ -36,3 +36,28 @@ body {
   margin: auto;
 }
 
+.loading-container {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.loading-bar {
+  width: 0;
+  height: 100%;
+  background-color: #4caf50;
+  animation: loading 2s infinite;
+}
+
+@keyframes loading {
+  0% { width: 0%; }
+  50% { width: 50%; }
+  100% { width: 100%; }
+}
+
+.margin-spin {
+  margin-top: 25px;
+}

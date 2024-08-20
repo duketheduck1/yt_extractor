@@ -1,69 +1,81 @@
-import React, {react, useState, useEffect} from "react";
+import React, { react, useState, useEffect } from "react";
 import "../styles/HomePage.css";
 import Button from 'react-bootstrap/Button';
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 import DownloadAudio from "../components/DownloadAudio";
 import DownloadVideo from "../components/DownloadVideo";
-// import axios from "axios";
 
 const HomePage = () => {
     const [url, setUrl] = useState("");
-    const [videoData, setVideoData] = useState(null); //update video metadata to videoData
+    const [videoData, setVideoData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [count, setCount] = useState(0);
 
-    const handleInputChange = (e) => {
-        setUrl(e.target.value)
-    }
-
-    const fetchVideoData = async(type) => {
-        setIsLoading(True);
-        try{
-            const response = await fetch("http://localhost:8000/load-meta-data/", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                },
-                body: JSON.stringify({url}),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setVideoData = data;
-            }else{
-                console.error("Error fetching data:", response.statusText);
-            } 
-
-        }catch(error){
-            console.error("Error fetching data:", error);
+    const fetchVideoData = async () => {
+        setIsLoading(true);
+        try {
+            const response = await axios.post("http://localhost:8000/api/load-meta-data/", { url }); // Corrected destructuring
+            if (response.status === 200) {
+                setVideoData(response.data);
+            } else {
+                console.error("Error fetching video data:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching video data:", error);
+        } finally {
+            setIsLoading(false);
         }
-    
-    }
+    };
 
     return (
-        <>
-            <h1 className="header"> Youtube Extractor </h1>
-            
-            <div className="center">
+        <div>
+            <h1>YouTube Fetch Data</h1>
+            <div>
                 <input
                     type="text"
-                    placeholder="Please parse your youtube URL here"
+                    placeholder="Please enter your YouTube URL here"
+                    value={url}
                     name="youtubeUrl"
                     className="url-input"
-                    value={url}
-                    onChange={handleInputChange}
-                ></input>
-
-                {/* <div>
-                    <NavLink to="/audio">
-                        <Button variant="outline-danger">Download Audio</Button>
-                    </NavLink>
-                    <NavLink to="/video">
-                        <Button variant="outline-danger">Download Video</Button>
-                    </NavLink>
-                </div> */}
-                
+                    onChange={(e) => setUrl(e.target.value)}
+                />
             </div>
-        </>
+            <div>
+                <Button variant="outline-danger" onClick={fetchVideoData}>
+                    Download Video
+                </Button>
+            </div>
+            
+            {isLoading && (
+                <div class="d-flex justify-content-center p-30">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">LOL</span>
+                    </div>
+                </div>
+            )}
+
+            {videoData && ( // videoData to check if there is data initialized and start rendering component
+                <div>
+                    <h2>Video Details</h2>
+                    <p><strong>Title:</strong> {videoData.title}</p>
+                    <p><strong>Duration:</strong> {videoData.duration}</p>
+                    <p><strong>Views:</strong> {videoData.views}</p>
+                    <p><strong>Uploader:</strong> {videoData.uploader}</p>
+                    <p><strong>URL:</strong> {videoData.url}</p>
+                    {videoData.resolution && (
+                        <ul>
+                            {videoData.resolution.map((res, index) => (
+                                <li key={index}><Button variant="outline-danger" onClick={()=>setCount(count + 1)}>
+                                {res}p
+                            </Button></li>
+                                
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            )}
+        </div>
     );
 }
 
