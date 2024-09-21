@@ -43,7 +43,7 @@ def load_youtube_data(request):
                 meta = ydl.extract_info(url, download=False)
                 formats = meta.get('formats', [])
 
-            # list of resolution to choose from ( res(p) = 4320, 2160, 1440, 1080, 720, 480, 360, 240, 144 )
+            # list of resolution to choose from ( res(p) = 1440, 1080, 720, 480, 360, 240, 144 )
             list_resolution = _list_yt_resolution(formats) 
 
             #context about url, title, duration, views, uploader and list of resolution
@@ -65,10 +65,10 @@ def load_youtube_data(request):
 def _list_yt_resolution(formats: list) -> list:
     # List available resolutions
     resolutions = set()
-
+    res_basic = ["1440", "1080", "720", "480", "360", "240"]
     for format in formats:
         resolution = format.get('format_note')
-        if resolution and resolution[0].isdigit():
+        if resolution and resolution[0].isdigit() and resolution in res_basic:
             resolutions.add(resolution)
 
     list_resolution_string = sorted(list(resolutions))
