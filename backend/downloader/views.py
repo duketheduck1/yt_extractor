@@ -34,7 +34,7 @@ def load_youtube_data(request):
         Cheatsheet for request on http://localhost:8000/api/load-meta-data/
 
         {
-            "url": "https://www.youtube.com/watch?v=tTWdWupLy1I"
+            "url": "https://www.youtube.com/watch?v=YeNBsW0Slrk"
         }
         '''
         if _validate_youtube_url(url):
