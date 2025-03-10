@@ -31,7 +31,8 @@ def load_youtube_data(request):
         print("Loading video from youtube")
         url = request.data.get('url') #in json form
         '''
-        Cheatsheet for request
+        Cheatsheet for request on http://localhost:8000/api/load-meta-data/
+
         {
             "url": "https://www.youtube.com/watch?v=tTWdWupLy1I"
         }
@@ -41,9 +42,9 @@ def load_youtube_data(request):
                 'quiet': True,  # Suppress the download output
             }
 
-            with yt_dlp.YoutubeDL({}) as ydl:
-                meta = ydl.extract_info(url, download=False)
-                formats = meta.get('formats', [])
+            with yt_dlp.YoutubeDL({}) as ydl:                
+                meta = ydl.extract_info(url, download=False)                
+                formats = meta.get('formats',[])
 
             # list of resolution to choose from ( res(p) = 1440, 1080, 720, 480, 360, 240, 144 )
             list_resolution = _list_yt_resolution(formats) 
