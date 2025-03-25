@@ -136,12 +136,40 @@ def get_info(url, options):
         "uploader":meta.get("uploader", None),
     }
     return context
-        
+
+
+MAIN_RESOLUTIONS = [144,360,720,1080]
+
+def get_video_resolutions(video_url):
+    try:
+        ydl_opts = {
+            'quiet': True,
+            'no_warnings': True,
+            'format': 'bestvideo'
+        }
+
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(video_url, download=False)
+            formats = info.get('formats', [])
+
+            resolutions = []
+            for fmt in formats:
+                if fmt.get('height') in MAIN_RESOLUTIONS:
+                    resolutions.append(f"{fmt['height']}")
+
+            return resolutions if resolutions else ["No matching resolutions found."]
+
+    except Exception as e:
+        return [f"Error: {str(e)}"]
 
 if __name__ == "__main__":
     
-    URL = "https://www.youtube.com/watch?v=mBw3qzf4s18"
-    save_path = r"C:\Users\ducod\Downloads"
+    URL = "https://www.youtube.com/watch?v=YeNBsW0Slrk"
+    resolutions = get_video_resolutions(URL)
+    print("Available Resolutions:")
+    for res in resolutions:
+        print(f"- {res}")
+    # save_path = r"C:\Users\ducod\Downloads"
     # load_data(URL) 
     # download_audio(URL)
     # print(list_video_resolutions(URL))
