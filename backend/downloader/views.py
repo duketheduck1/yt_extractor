@@ -92,8 +92,7 @@ def load_youtube_data(request):
     
     except Exception as e:
         logger.info(f"Error loading Youtube data: {str(e)}")
-        return Response(e.args[0], status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(e.args[0], status=status.HTTP_400_BAD_REQUEST)    
 
 @api_view(['POST'])
 def download_media(request):
@@ -179,17 +178,44 @@ def download_media(request):
 
 
         #TODO: need to add download path and directory
+        with yt_dlp.YoutubeDL({'quite': True}) as ydl:
+            info_dict = ydl.extract_info(url, download=False)
+            video_title = info_dict.get('title', 'unknown')
+
+        sanitized_title = re.sub(r'[<>:"/\\|?*]', '',video_title)
+
+        if download_type == 'video':
+            filename = f"{sanitized_title}_{resolution}.{file_format}"
+        if download_type == 'video_no_audio':
+            filename = f"{sanitized_title}_no_audio_{resolution}.{file_format}"
+        else:
+            filename = f"{sanitized_title}_audio.{file_format}"
+
+        file_path = os.path.join(settings.MEDIA_ROOT, filename)
+
+        ydl_opts.update({
+            'outtmpl': file_path,
+            'retries': 3,
+            'socket_timeout': 60,
+        })
+
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                result = ydl.extract_info(url, download = True)
+
+            return Response({
+                "message": f"{download_type.capitalize()} downloaded successfully",
+                "filename": filename,
+                "download_url": f"/api/download/{filename}"
+            }, status=status.HTTP_200_OK)
         
+        except Exception as e:
+            logger.error(f"Error downloading: {str(e)}")
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     except Exception as e:
         logger.error(f"Error in download process: {str(e)}")
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-
-
-
-    
 
 
 # # This function will get the url and 1 resolution choice from context["resolution"]
