@@ -6,9 +6,6 @@ const Download = ({ onMetadataReceived }) => {
     const [ resolution, setResolution] = useState(MediaMetadata.resolution[0]);
     const [ fileFormat, setFileFormat] = useState(MediaMetadata.resolution[0]);
     const [status, setStatus] = useState('');
-    const [loading, setLoading] = useState(false);
-
-
-    
-
+    const [loading, setLoading] = useState(false);  
+}
 export default Download;
