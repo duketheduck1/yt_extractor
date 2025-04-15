@@ -94,125 +94,68 @@ def load_youtube_data(request):
         logger.info(f"Error loading Youtube data: {str(e)}")
         return Response(e.args[0], status=status.HTTP_400_BAD_REQUEST)    
 
-@api_view(['POST'])
-def download_media(request):
+@api_view(['GET'])
+def download_media(request, filename):
+    
+    
+    url = f"https://www.youtube.com/watch?v={filename[1:len(filename)-8]}"
     try:
-        url = request.data.get('url')
-        download_type = request.data.get('type','video')
-        file_format = request.data.get('format','mp4')
-        resolution = request.data.get('resolution')
+        ex_file = filename[-3:]
+        res_file = filename[-8:-4]
+        url = f"https://www.youtube.com/watch?v={filename[1:len(filename)-8]}"
 
         # Validate input URL
         is_valid, error_message = _validate_youtube_url(url)
-        if not is_valid:
-            return Response({"error": error_message}, status=status.HTTP_400_BAD_REQUEST)
-        
-        #validate download type in video', 'audio', or 'video_no_audio' 
-        if download_type not in ['video', 'audio', 'video_no_audio']:
-            return Response(
-                {"error": "Download type must be 'video', 'audio', or 'video_no_audio' "}, status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        #supported format
-        supported_formats = (
-            SUPPORTED_FORMATS['video'] 
-            if download_type in ['video', 'video_no_audio'] 
-            else SUPPORTED_FORMATS['audio']
-        )
-        if file_format not in supported_formats:
-            return Response(
-                {"error": f"Supported formats are: {supported_formats}"},
-                status=status.HTTP_400_BAD_REQUEST
-            ) 
-        
-        #Download type
-        if download_type == "video": #video with audio
-            try:
-                resolution = int(resolution)
-            except (ValueError, TypeError):
-                return Response(
-                    {"error":"Resolution must be an integer"},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+        if is_valid and (ex_file in "mp4|mp3"):
+            file_path = os.path.join(settings.MEDIA_ROOT, filename)
             
-            if resolution not in MAIN_RESOLUTIONS:
-                return Response(
-                    {"error": f"Supported resolutions are: {MAIN_RESOLUTIONS}"},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+            # return Response({"error": error_message}, status=status.HTTP_400_BAD_REQUEST)
+            if not os.path.exists(file_path):
+                get_video(url, res_file, ex_file, filename)
             
-            ydl_opts = {
-                'format': f'bestvideo[height<={resolution}]+bestaudio/best',            
-                'merge_output_format': file_format,
-            }
-
-        elif download_type == "vodep_no_audio": #video no audio
-            try:
-                resolution = int(resolution)
-            except (ValueError, TypeError):
-                return Response(
-                    {"error":"Resolution must be an integer"},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            
-            if resolution not in MAIN_RESOLUTIONS:
-                return Response(
-                    {"error": f"Supported resolutions are: {MAIN_RESOLUTIONS}"},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            
-            ydl_opts = {
-                'format': f'bestvideo[height<={resolution}]',            
-                'merge_output_format': file_format,
-            }
-
-        else:#audio only
-            
-            dl_opts = {
-                'format': 'bestaudio/best',
-                'postprocessors': [{  # Extract audio using ffmpeg
-                    'key': 'FFmpegExtractAudio',
-                    'preferredcodec': file_format
-                }]
-            }
-
-
-        #TODO: need to add download path and directory
-        with yt_dlp.YoutubeDL({'quite': True}) as ydl:
-            info_dict = ydl.extract_info(url, download=False)
-            video_title = info_dict.get('title', 'unknown')
-
-        sanitized_title = re.sub(r'[<>:"/\\|?*]', '',video_title)
-
-        if download_type == 'video':
-            filename = f"{sanitized_title}_{resolution}.{file_format}"
-        if download_type == 'video_no_audio':
-            filename = f"{sanitized_title}_no_audio_{resolution}.{file_format}"
+            if os.path.exists(file_path):
+                with open(file_path, 'rb') as f:
+                    response = HttpResponse(f.read(), content_type=f'application/{ex_file}')
+                    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+                    return response
+            else:
+                # Return a 404 response if the file is still not found
+                return Response({"error": "File not found"}, status=404)
         else:
-            filename = f"{sanitized_title}_audio.{file_format}"
+            # Return a 400 response for an invalid URL or file extension
+            return Response({"error": "Invalid URL or file extension"}, status=400)
+    except Exception as e:
+        logger.error(f"Error in download process: {str(e)}")
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def preview_video(request, filename):
+    
+    url = f"https://www.youtube.com/watch?v={filename[1:len(filename)-8]}"
+    try:
+        ex_file = filename[-3:]
+        res_file = filename[-8:-4]
+        url = f"https://www.youtube.com/watch?v={filename[1:len(filename)-8]}"
 
-        file_path = os.path.join(settings.MEDIA_ROOT, filename)
-
-        ydl_opts.update({
-            'outtmpl': file_path,
-            'retries': 3,
-            'socket_timeout': 60,
-        })
-
-        try:
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                result = ydl.extract_info(url, download = True)
-
-            return Response({
-                "message": f"{download_type.capitalize()} downloaded successfully",
-                "filename": filename,
-                "download_url": f"/api/download/{filename}"
-            }, status=status.HTTP_200_OK)
-        
-        except Exception as e:
-            logger.error(f"Error downloading: {str(e)}")
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        # Validate input URL
+        is_valid, error_message = _validate_youtube_url(url)
+        if is_valid and (ex_file in "mp4|mp3"):
+            file_path = os.path.join(settings.MEDIA_ROOT, filename)
+            
+            # return Response({"error": error_message}, status=status.HTTP_400_BAD_REQUEST)
+            if not os.path.exists(file_path):
+                get_video(url, res_file, ex_file, filename)
+            
+            if os.path.exists(file_path):
+                video_url = f"{settings.MEDIA_URL}{filename}"
+                # video_html = 
+                
+            else:
+                # Return a 404 response if the file is still not found
+                return Response({"error": "File not found"}, status=404)
+        else:
+            # Return a 400 response for an invalid URL or file extension
+            return Response({"error": "Invalid URL or file extension"}, status=400)
     except Exception as e:
         logger.error(f"Error in download process: {str(e)}")
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -231,69 +174,37 @@ def download_media(request):
 #     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
 #         ydl.download(url)
 
-
-# @api_view(['GET'])
-# def download_file(request, filename):
-#     url, res, ex_file = make_info(filename)
-#     try:
-#         # Check URL validity and file extension
-#         if _validate_youtube_url(url) and (ex_file in 'mp4|mp3'):
-#             file_path = os.path.join(settings.MEDIA_ROOT, filename)
-#             ex_file = filename[-3:]
-
-#             # If the file doesn't exist, try to download it
-#             if not os.path.exists(file_path):
-#                 get_video(url, res, ex_file, filename)
-
-#             # Check again if the file exists after the download attempt
-#             if os.path.exists(file_path):
-#                 with open(file_path, 'rb') as f:
-#                     response = HttpResponse(f.read(), content_type=f'application/{ex_file}')
-#                     response['Content-Disposition'] = f'attachment; filename="{filename}"'
-#                     return response
-#             else:
-#                 # Return a 404 response if the file is still not found
-#                 return Response({"error": "File not found"}, status=404)
-#         else:
-#             # Return a 400 response for an invalid URL or file extension
-#             return Response({"error": "Invalid URL or file extension"}, status=400)
-
-#     except Exception as e:
-#         # Catch any other exceptions and return a 500 Internal Server Error
-#         return Response({"error": str(e)}, status=500)    
-
-
-# def get_video(url, res, ex_file, filename, max_retries=3, delay=5):
+def get_video(url, res, ex_file, filename, max_retries=3, delay=5):
     
-#     file_path = os.path.join(settings.MEDIA_ROOT, filename)
+    file_path = os.path.join(settings.MEDIA_ROOT, filename)
 
-#     # Configure yt-dlp options for video or audio downloads
-#     if ex_file == 'mp3':
-#         ydl_opts = {
-#             'format': 'm4a/bestaudio/best',            
-#             'postprocessors': [{
-#                 'key': 'FFmpegExtractAudio',
-#                 'preferredcodec': ex_file,
-#             }],
-#             'outtmpl': file_path[0:len(file_path)-4],
-#             'retries': max_retries  # yt-dlp retry option
-#         }
-#     else:
-#         ydl_opts = {
-#             "format": f"bestvideo[height<={res}]+bestaudio/best",  # Best video and audio
-#             "merge_output_format": ex_file,  # Merge into mp4, mkv, etc.
-#             "outtmpl": file_path,  # Output path
-#             "postprocessors": [{
-#                 'key': 'FFmpegVideoConvertor',
-#                 'preferedformat': ex_file,  # Convert to specific format (mp4, mkv, etc.)
-#             }],
-#             'socket_timeout': 60,  # Set socket timeout to 60 seconds
-#         }
+    # Configure yt-dlp options for video or audio downloads
+    if ex_file == 'mp3':
+        ydl_opts = {
+            'format': 'm4a/bestaudio/best',            
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': ex_file,
+            }],
+            'outtmpl': file_path[0:len(file_path)-4],
+            'retries': max_retries  # yt-dlp retry option
+        }
+    else:
+        ydl_opts = {
+            "format": f"bestvideo[height<={res}]+bestaudio/best",  # Best video and audio
+            "merge_output_format": ex_file,  # Merge into mp4, mkv, etc.
+            "outtmpl": file_path,  # Output path
+            "postprocessors": [{
+                'key': 'FFmpegVideoConvertor',
+                'preferedformat': ex_file,  # Convert to specific format (mp4, mkv, etc.)
+            }],
+            'socket_timeout': 60,  # Set socket timeout to 60 seconds
+        }
     
-#     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-#         result = ydl.extract_info(url, download=True)
-#         file_path = ydl.prepare_filename(result)
-#         return file_path
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        result = ydl.extract_info(url, download=True)
+        file_path = ydl.prepare_filename(result)
+        return file_path
 
 
 
