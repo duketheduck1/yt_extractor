@@ -1,20 +1,33 @@
 import React, { useState } from "react";
+import axios from 'axios';
 
-function VideoPreviewComponent({ url, index, res }) {
+const VideoPreview = ({ url, res }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
 
-  const videoUrl = `http://localhost:8000/api/download/f${url.split('v=')[1]}${res.toString().length === 3 ? "0" : ""}${res}.mp4/`;
+  const playVideo = async() => {
+    try {
+      const response = await axios.get(url);
+      if (response.status === 200) {
+        setPreviewUrl(response.data);
+      } else {
+        console.error('Error fetching video data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching video data:', error);
+      setError(error.response?.data?.error || 'Failed to fetch video info');
+    }
+  }
 
   return (
-    <div key={index}>
+    <div>
       <button
-        onClick={() => setPreviewUrl(videoUrl)}
+        onClick={playVideo}
         style={{ color: 'blue', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer' }}
       >
-        {res}p
+        view{res}p
       </button>
 
-      {previewUrl === videoUrl && (
+      {previewUrl && (
         <div style={{ marginTop: '10px' }}>
           <video width="480" controls>
             <source src={previewUrl} type="video/mp4" />
@@ -25,3 +38,5 @@ function VideoPreviewComponent({ url, index, res }) {
     </div>
   );
 }
+
+export default VideoPreview;
