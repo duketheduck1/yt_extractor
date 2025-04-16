@@ -147,7 +147,10 @@ def preview_video(request, filename):
                 get_video(url, res_file, ex_file, filename)
             
             if os.path.exists(file_path):
-                video_url = f"{settings.MEDIA_URL}{filename}"
+                video_url = f"http://localhost:8000{settings.MEDIA_URL}{filename}"
+                print("check: ", video_url)
+                return HttpResponse(video_url)
+            
                 # video_html = 
                 
             else:
@@ -159,20 +162,6 @@ def preview_video(request, filename):
     except Exception as e:
         logger.error(f"Error in download process: {str(e)}")
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-# # This function will get the url and 1 resolution choice from context["resolution"]
-# @api_view(["POST"])
-# def download_video(url, resolution_choice): 
-#     all_resolutions = _list_yt_resolution(url)
-#     if resolution_choice not in all_resolutions:
-#         raise ValueError("This resolution does not exist for the url")
-#     ydl_opts = {
-#         "format": f"bestvideo[height<={resolution_choice}]+bestaudio/best",
-#         "merge_output_format": "webm",
-#     }
-#     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-#         ydl.download(url)
 
 def get_video(url, res, ex_file, filename, max_retries=3, delay=5):
     
@@ -206,13 +195,3 @@ def get_video(url, res, ex_file, filename, max_retries=3, delay=5):
         file_path = ydl.prepare_filename(result)
         return file_path
 
-
-
-# def make_info(filename):
-
-#     ex_file = filename[-3:]
-#     lenfile = len(filename)
-#     url ="https://www.youtube.com/watch?v="+filename[1:lenfile-8]
-    
-#     res = int(filename[lenfile-8:lenfile-4])  
-#     return url,res,ex_file
