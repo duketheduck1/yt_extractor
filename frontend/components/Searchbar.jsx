@@ -1,5 +1,7 @@
 import { FormEvent, useState } from 'react';
 import axios from 'axios';
+import PreviewVideo from './PreviewVideo';
+
 const Searchbar = () => {
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
@@ -81,6 +83,10 @@ const Searchbar = () => {
                             
                             <div key={index}>
                             <a href={"http://localhost:8000/api/download/f"+url.split('v=')[1]+(res.toString().length==3?"0":"") +res+".mp4/"}>{res}p</a>
+                            <PreviewVideo 
+                                url={"http://localhost:8000/api/preview-video/f"+url.split('v=')[1]+(res.toString().length==3?"0":"") +res+".mp4/"}
+                                res={""+res}
+                            />
                             </div>
                         ))}
                         </div>
