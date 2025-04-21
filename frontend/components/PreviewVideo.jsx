@@ -3,12 +3,17 @@ import axios from 'axios';
 
 const VideoPreview = ({ url, res }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const closeVideo = () => {
+    setPreviewUrl(null);
+    setIsOpen(false);
+  }
   const playVideo = async() => {
     try {
       const response = await axios.get(url);
       if (response.status === 200) {
         setPreviewUrl(response.data);
+        setIsOpen(true);
       } else {
         console.error('Error fetching video data:', response.statusText);
       }
@@ -26,9 +31,10 @@ const VideoPreview = ({ url, res }) => {
       >
         view{res}p
       </button>
-
-      {previewUrl && (
+      
+      {isOpen && previewUrl && (
         <div style={{ marginTop: '10px' }}>
+          <button onClick={closeVideo}>Close</button>
           <video width="480" controls>
             <source src={previewUrl} type="video/mp4" />
             Your browser does not support the video tag.
