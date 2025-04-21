@@ -59,9 +59,9 @@ const Searchbar = () => {
                 </div>
             )}
             {/* videoData if and not if exist */}
-            <div className='container-details'>
+            <div className='container-details flex flex-row'>
                 {videoData && (
-                    <div className="left-div">
+                    <div className="w-full">
                         <div className="flex-1 bg-white shadow-md rounded p-4">
                         <h4 className="text-xl font-bold mb-4">Video Details</h4>
                         <p><strong>Title:</strong> {videoData.title}</p>
@@ -75,13 +75,13 @@ const Searchbar = () => {
                 <div className="list-center">
                     {videoData && videoData.resolution && (
                         <div>
-                            <div >
+                            <div className='flex flex-row gap-4'>
                                 <a href={"http://localhost:8000/api/download/f"+url.split('v=')[1]+"0125.mp3/"}>Audio mp3</a>
                                 
                             </div>
                         {videoData.resolution.map((res, index) => (
                             
-                            <div key={index}>
+                            <div key={index} className='flex flex-row gap-4'>
                             <a href={"http://localhost:8000/api/download/f"+url.split('v=')[1]+(res.toString().length==3?"0":"") +res+".mp4/"}>{res}p</a>
                             <PreviewVideo 
                                 url={"http://localhost:8000/api/preview-video/f"+url.split('v=')[1]+(res.toString().length==3?"0":"") +res+".mp4/"}
