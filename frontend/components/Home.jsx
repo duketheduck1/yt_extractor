@@ -1,27 +1,41 @@
 import React from "react";
 import '../styles/index.css';
+import Nav from "./Nav";
 import Searchbar from "./Searchbar";
-
+import Footer from "./Footer";
 const Home = () => {
     return (
-        <>
-            <section className="px-6 md:px-20 py-40 border-2 border-red-500 top-0">
-                <div className="flex flex-col gap-4 top-1">
-                    {/* flex-col move content to left */}
-                    <div className="flex flex-col justify-center top-1"> 
-                        <p class="small-text">
-                            Please Input your Youtube url
+
+        <div className="flex flex-col min-h-screen bg-[#121212]">
+            <Nav />
+            <main className="flex-grow">
+                <Searchbar />
+                {/* About Section */}
+                <section id="about" className="py-16 bg-[#1A1A1A]">
+                  <div className="container mx-auto px-4">
+                    <div className="max-w-3xl mx-auto">
+                      <h2 className="text-3xl font-bold text-white text-center mb-6">About This Project</h2>
+                      <div className="bg-[#242424] p-6 rounded-lg shadow-lg">
+                        <p className="text-[#AAAAAA] mb-4">
+                          YT Extractor is a personal project built to allow downloading YouTube videos for personal use. 
+                          The application provides a simple and intuitive interface to search, preview, and download videos
+                          in different formats and qualities.
                         </p>
-                        <h1 className="head-text">
-                            Download your Youtube for 
-                            <span className="text-primary"> Free</span>
-                        </h1>
-                        <Searchbar/>
+                        <p className="text-[#AAAAAA] mb-4">
+                          Built with React and Node.js, this project serves as a demonstration of modern web development
+                          techniques, asynchronous API calls, and user interface design.
+                        </p>
+                        <p className="text-[#AAAAAA]">
+                          <strong className="text-primary">Note:</strong> This service is intended for personal use only.
+                          Please respect copyright laws and YouTube's terms of service when using this application.
+                        </p>
+                      </div>
                     </div>
-                    {/* <Download/> */}
-                </div>
-            </section>
-        </>
+                  </div>
+                </section>
+            </main>
+            <Footer />
+        </div>
     )
 }
 
