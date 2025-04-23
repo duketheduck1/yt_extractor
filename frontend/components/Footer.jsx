@@ -35,7 +35,7 @@ const Footer = () => {
               </svg>
             </a>
             <a
-              href="https://github.com"
+              href="https://github.com/duketheduck1"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#AAAAAA] hover:text-white transition duration-150"
@@ -50,7 +50,7 @@ const Footer = () => {
               </svg>
             </a>
             <a
-              href="mailto:contact@example.com"
+              href="mailto:ducoday12345@gmail.com"
               className="text-[#AAAAAA] hover:text-white transition duration-150"
             >
               <svg
