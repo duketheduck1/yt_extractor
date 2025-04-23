@@ -84,7 +84,10 @@ const Searchbar = () => {
       {/* Hero Section */}
       <div className="text-center mb-8">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          YouTube <span className="text-primary">Downloader</span>
+          <span className="bg-[#FF0000] text-white px-3 py-1 rounded-lg">
+            YouTube
+          </span>{" "}
+          <span className="text-primary">Downloader</span>
         </h1>
         <p className="text-[#AAAAAA] mb-6 max-w-2xl mx-auto">
           Free online tool to download YouTube videos in various formats. Just
@@ -105,14 +108,20 @@ const Searchbar = () => {
             placeholder="Paste YouTube URL here..."
             className="search-input focus:ring-2 focus:ring-primary"
           />
-          <button type="submit" disabled={loading} className="search-btn">
+          <button
+            type="submit"
+            disabled={loading}
+            className={`py-2 px-3 ${
+              loading ? "bg-indigo-700" : "bg-indigo-600 hover:bg-indigo-700"
+            } text-white rounded-md text-center transition duration-150 flex items-center justify-center`}
+          >
             {loading ? (
-              <div className="flex items-center justify-center">
+              <>
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
                 <span>Loading...</span>
-              </div>
+              </>
             ) : (
-              <div className="flex items-center justify-center">
+              <>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 mr-2"
@@ -128,7 +137,7 @@ const Searchbar = () => {
                   />
                 </svg>
                 <span>Search</span>
-              </div>
+              </>
             )}
           </button>
         </div>
