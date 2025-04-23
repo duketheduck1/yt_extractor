@@ -7,7 +7,8 @@ const Footer = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <h3 className="text-white font-bold text-lg">Built by Duc</h3>
+              {/* <h3 className="text-white font-bold text-lg">Built by Duc</h3> */}
+              <img src={logo} class="h-40 me-3" alt="YT Extractor" />
               <p className="text-[#AAAAAA] text-sm mt-1">© {new Date().getFullYear()} YT Extractor. All rights reserved.</p>
               <p className="text-[#AAAAAA] text-xs mt-2">This service is intended for personal use only. Please respect copyright laws.</p>
             </div>
