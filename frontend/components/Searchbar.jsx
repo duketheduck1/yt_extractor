@@ -50,8 +50,9 @@ const Searchbar = () => {
         return;
       }
 
-      const resString = resolution.toString().length === 3 ? `0${resolution}` : resolution;
-      const previewUrl  = `http://localhost:8000/api/preview-video/f${videoId}${resString}.mp4/`;
+      const resString =
+        resolution.toString().length === 3 ? `0${resolution}` : resolution;
+      const previewUrl = `http://localhost:8000/api/preview-video/f${videoId}${resString}.mp4/`;
       const response = await axios.get(previewUrl);
 
       setPreviewUrl(response.data);
@@ -72,8 +73,9 @@ const Searchbar = () => {
     if (format === "mp3") {
       return `http://localhost:8000/api/download/f${videoId}0125.mp3/`;
     } else {
-      const resString = resolution.toString().length === 3 ? `0${resolution}` : resolution;
-        return `http://localhost:8000/api/download/f${videoId}${resString}.mp4/`;
+      const resString =
+        resolution.toString().length === 3 ? `0${resolution}` : resolution;
+      return `http://localhost:8000/api/download/f${videoId}${resString}.mp4/`;
     }
   };
 
