@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Link } from 'wouter';
-import logo from '../src/assets/logo.svg';
+import { useState } from "react";
+import { Link } from "wouter";
+import logo from "../src/assets/logo.svg";
 
 const scrollToSection = (id) => {
   const element = document.getElementById(id);
   if (element) {
-    element.scrollIntoView({ behavior: 'smooth' });
+    element.scrollIntoView({ behavior: "smooth" });
   }
 };
 
@@ -28,49 +28,67 @@ const Nav = () => {
             <h1 className="ml-2 text-xl font-bold text-white">YT Extractor</h1>
           </div>
         </div>
-        
+
         <nav className="hidden md:flex space-x-6">
-          <Link href="/" className="text-white border-b-2 border-primary font-medium">Home</Link>
-          <button 
-            onClick={() => scrollToSection('about')} 
+          <Link
+            href="/"
+            className="text-white border-b-2 border-primary font-medium"
+          >
+            Home
+          </Link>
+          <button
+            onClick={() => scrollToSection("about")}
             className="text-[#AAAAAA] hover:text-white transition duration-150"
           >
             About
           </button>
-          <button 
-            onClick={() => scrollToSection('footer')} 
+          <button
+            onClick={() => scrollToSection("footer")}
             className="text-[#AAAAAA] hover:text-white transition duration-150"
           >
             Contact
           </button>
         </nav>
-        
+
         <button className="md:hidden text-white" onClick={toggleMenu}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
         </button>
       </div>
-      
+
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#1E1E1E] py-4">
           <div className="container mx-auto px-4 flex flex-col space-y-4">
-            <Link href="/" className="text-white font-medium">Home</Link>
-            <button 
+            <Link href="/" className="text-white font-medium">
+              Home
+            </Link>
+            <button
               onClick={() => {
-                scrollToSection('about');
+                scrollToSection("about");
                 toggleMenu();
-              }} 
+              }}
               className="text-[#AAAAAA] hover:text-white transition duration-150 text-left"
             >
               About
             </button>
-            <button 
+            <button
               onClick={() => {
-                scrollToSection('footer');
+                scrollToSection("footer");
                 toggleMenu();
-              }} 
+              }}
               className="text-[#AAAAAA] hover:text-white transition duration-150 text-left"
             >
               Contact
