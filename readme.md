@@ -1,0 +1,139 @@
+# YouTube Extractor
+
+YouTube Extractor is a web application that allows users to download YouTube videos and audio in various formats and resolutions. It is built using **Django** for the backend and **React** for the frontend, with **yt-dlp** as the core library for video extraction.
+
+## Features
+
+- **Video Metadata Extraction**: Fetch video details such as title, duration, views, uploader, and available resolutions.
+- **Video and Audio Downloads**: Download videos in MP4 format or audio in MP3 format.
+- **Preview Videos**: Watch a preview of the video before downloading.
+- **Responsive Design**: A clean and responsive user interface built with TailwindCSS.
+
+## Tech Stack
+
+### Backend
+- **Django**: Python web framework for the backend.
+- **Django REST Framework**: For building RESTful APIs.
+- **yt-dlp**: A powerful library for YouTube video extraction.
+- **PostgreSQL**: Database for storing application data.
+
+### Frontend
+- **React**: JavaScript library for building user interfaces.
+- **Vite**: Fast development build tool.
+- **TailwindCSS**: Utility-first CSS framework for styling.
+
+## Installation
+
+### Prerequisites
+- Python 3.8+
+- Node.js 16+
+- PostgreSQL
+
+### Backend Setup
+
+1. **Clone the repository**  
+```bash
+git clone https://github.com/your-username/yt_extractor.git
+cd yt_extractor/backend
+```
+
+2. **Create a virtual environment and activate it**  
+```bash
+python -m venv myvenv
+source myvenv/bin/activate  # On Windows: myvenv\Scripts\activate
+```
+
+3. **Install dependencies**  
+```bash
+pip install -r requirements.txt
+```
+
+4. **Configure the database**  
+Open `backend/settings.py` and update the `DATABASES` section:
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'your_database_name',
+        'USER': 'your_db_user',
+        'PASSWORD': 'your_db_password',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+```
+
+5. **Apply migrations**  
+```bash
+python manage.py migrate
+```
+
+6. **Start the backend server**  
+```bash
+python manage.py runserver
+```
+
+### Frontend Setup
+
+1. **Navigate to the frontend directory**  
+```bash
+cd ../frontend
+```
+
+2. **Install dependencies**  
+```bash
+npm install
+```
+
+3. **Start the development server**  
+```bash
+npm run dev
+```
+
+4. **Open the application** in your browser at [http://localhost:5173](http://localhost:5173)
+
+## Usage
+
+1. Paste a YouTube URL into the search bar on the homepage.  
+2. View video details and available resolutions.  
+3. Preview the video or download it in your preferred format and resolution.
+
+## API Endpoints
+
+### `/api/load-meta-data/` (POST)
+- **Description**: Fetch metadata for a YouTube video.
+- **Request Body**:
+```json
+{
+  "url": "https://www.youtube.com/watch?v=example"
+}
+```
+
+- **Response**:
+```json
+{
+  "url": "https://www.youtube.com/watch?v=example",
+  "title": "Example Video",
+  "duration": "00:05:30",
+  "views": 123456,
+  "uploader": "Example Uploader",
+  "resolution": [144, 360, 720, 1080],
+  "download_options": {
+    "video_formats": ["mp4", "webm"],
+    "audio_formats": ["mp3", "m4a", "wav"]
+  }
+}
+```
+
+### `/api/download/<filename>` (GET)
+- **Description**: Download a video or audio file.
+
+### `/api/preview-video/<filename>` (GET)
+- **Description**: Preview a video before downloading.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Disclaimer
+This tool is intended strictly for personal use. Please comply with all applicable copyright laws and YouTube’s terms of service.
+
