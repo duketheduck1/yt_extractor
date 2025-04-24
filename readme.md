@@ -138,6 +138,20 @@ npm run dev
 ### `/api/preview-video/<filename>` (GET)
 - **Description**: Preview a video before downloading.
 
+## ToDo
+
+- [x] Mobile responsiveness – UI works well on small screens.
+- [ ] Dark Mode / Light Mode switch.
+- [ ] Enable sharing functionality (if legally compliant).
+- [x] Support multiple formats (e.g. MP3, 720p, 1080p).
+- [x] Add input validation for YouTube URLs on the frontend.
+- [x] Improve error handling on both frontend and backend (e.g. invalid URLs, download failures).
+- [ ] Add basic CI/CD for automated testing and deployment.
+- [ ] Refactor frontend by updating `style.css` – it is still a mess.
+- [ ] Add thumbnail support for YouTube videos.
+- [ ] Add a timer to delete cached preview videos or thumbnails.
+- [x] Write unit tests for backend APIs and frontend components.
+
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
