@@ -101,9 +101,19 @@ npm run dev
 
 ## Usage
 
-1. Paste a YouTube URL into the search bar on the homepage.  
-2. View video details and available resolutions.  
+![image](https://github.com/user-attachments/assets/260990da-7619-4a3e-8fd2-7b37409c182a)
+1. Paste a YouTube URL into the search bar on the homepage.
+![image](https://github.com/user-attachments/assets/9f59db0b-fe73-48c3-92e0-4209c33e210f)
+2. View video details and available resolutions.
+![image](https://github.com/user-attachments/assets/9f59db0b-fe73-48c3-92e0-4209c33e210f)
 3. Preview the video or download it in your preferred format and resolution.
+4. Overall websites view on Ipad.  
+![image](https://github.com/user-attachments/assets/c282d1c8-5a80-45ad-a849-a32dab209705)
+5. Overall websites view on Phone.  
+![image](https://github.com/user-attachments/assets/9bd36fc6-9885-4112-8577-26a1d9fa17a2)
+
+
+
 
 ## API Endpoints
 
@@ -157,4 +167,7 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Disclaimer
 This tool is intended strictly for personal use. Please comply with all applicable copyright laws and YouTube’s terms of service.
+
+
+
 
