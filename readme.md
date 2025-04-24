@@ -1,6 +1,6 @@
 # YouTube Extractor
 
-YouTube Extractor is a web application that allows users to download YouTube videos and audio in various formats and resolutions. It is built using **Django** for the backend and **React** for the frontend, with **yt-dlp** as the core library for video extraction.
+YouTube Extractor is a web application that allows users to download YouTube videos and audio in various formats and resolutions. It is built using **Django** for the backend and **React** for the frontend, with `yt-dlp` as the core library for video extraction.
 
 ## Features
 
