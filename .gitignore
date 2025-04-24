@@ -31,6 +31,7 @@ $RECYCLE.BIN/
 .history/
 *.code-workspace
 
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -64,3 +65,13 @@ coverage/
 build/
 public/
 *.map
+=======
+#test output file
+test.txt
+
+
+# Ignore all MP3, MP4, webm files
+*.mp3
+*.mp4
+*.webm
+>>>>>>> 81b51936b33d05dc549fd6bfba7283a7f5c0461b

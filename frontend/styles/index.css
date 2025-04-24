@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+.search-input {
+    @apply flex-1 min-w-[200px] w-full p-3 border border-gray-300 rounded-lg shadow-xs text-base text-gray-500 focus:outline-none;
+}
+
