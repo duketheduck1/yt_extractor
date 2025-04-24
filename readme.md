@@ -25,9 +25,16 @@ YouTube Extractor is a web application that allows users to download YouTube vid
 ## Installation
 
 ### Prerequisites
-- Python 3.8+
-- Node.js 16+
-- PostgreSQL
+- Python 3.8+ (Backend)
+- Node.js 16+ (Frontend)
+- PostgreSQL (Database)
+- Frontend Dependencies:
+  - @tailwindcss/vite: ^4.0.17
+  - axios: ^1.8.4
+  - react: ^19.0.0
+  - react-dom: ^19.0.0
+  - tailwindcss: ^4.0.17
+  - wouter: ^3.7.0
 
 ### Backend Setup
 
